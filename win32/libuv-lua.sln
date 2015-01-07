@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua", "..\lua\lua.vcxproj", "{084FFF23-BF37-4E7E-A9DC-A529CD3D9686}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libuv", "..\libuv\libuv.vcxproj", "{9C106B58-FD0F-4283-AACD-9FED495D4AAF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libuv-lua", "..\libuv-lua\libuv-lua.vcxproj", "{A5CAE1DD-79DA-4AFD-AC5E-34F70CF1E777}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{084FFF23-BF37-4E7E-A9DC-A529CD3D9686}.Debug|Win32.ActiveCfg = Debug|Win32
+		{084FFF23-BF37-4E7E-A9DC-A529CD3D9686}.Debug|Win32.Build.0 = Debug|Win32
+		{084FFF23-BF37-4E7E-A9DC-A529CD3D9686}.Debug|x64.ActiveCfg = Debug|Win32
+		{084FFF23-BF37-4E7E-A9DC-A529CD3D9686}.Release|Win32.ActiveCfg = Release|Win32
+		{084FFF23-BF37-4E7E-A9DC-A529CD3D9686}.Release|Win32.Build.0 = Release|Win32
+		{084FFF23-BF37-4E7E-A9DC-A529CD3D9686}.Release|x64.ActiveCfg = Release|Win32
+		{9C106B58-FD0F-4283-AACD-9FED495D4AAF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9C106B58-FD0F-4283-AACD-9FED495D4AAF}.Debug|Win32.Build.0 = Debug|Win32
+		{9C106B58-FD0F-4283-AACD-9FED495D4AAF}.Debug|x64.ActiveCfg = Debug|Win32
+		{9C106B58-FD0F-4283-AACD-9FED495D4AAF}.Release|Win32.ActiveCfg = Release|Win32
+		{9C106B58-FD0F-4283-AACD-9FED495D4AAF}.Release|Win32.Build.0 = Release|Win32
+		{9C106B58-FD0F-4283-AACD-9FED495D4AAF}.Release|x64.ActiveCfg = Release|Win32
+		{A5CAE1DD-79DA-4AFD-AC5E-34F70CF1E777}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A5CAE1DD-79DA-4AFD-AC5E-34F70CF1E777}.Debug|Win32.Build.0 = Debug|Win32
+		{A5CAE1DD-79DA-4AFD-AC5E-34F70CF1E777}.Debug|x64.ActiveCfg = Debug|Win32
+		{A5CAE1DD-79DA-4AFD-AC5E-34F70CF1E777}.Release|Win32.ActiveCfg = Release|Win32
+		{A5CAE1DD-79DA-4AFD-AC5E-34F70CF1E777}.Release|Win32.Build.0 = Release|Win32
+		{A5CAE1DD-79DA-4AFD-AC5E-34F70CF1E777}.Release|x64.ActiveCfg = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

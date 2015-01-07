@@ -1,0 +1,7 @@
+;uvlua.def : Declares the module parameters for the DLL.
+
+LIBRARY      "uvlua"
+
+EXPORTS
+	luaopen_uvlua
+	

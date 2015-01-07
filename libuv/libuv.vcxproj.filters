@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="src\uv-common.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="libuv\include\uv.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\libuv.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4b65afe0-e675-4fa0-ab7a-89ff4e68c27c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{f9bfe283-388c-42ad-b40b-8db55783a52b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\win">
+      <UniqueIdentifier>{c47bd556-384a-4697-9dec-033f6d2a3d91}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\fs-poll.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\inet.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\threadpool.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uv-common.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\version.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\async.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\core.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\dl.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\error.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\fs.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\fs-event.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\getaddrinfo.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\getnameinfo.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\handle.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\loop-watcher.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\pipe.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\poll.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\process.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\process-stdio.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\req.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\signal.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\stream.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\tcp.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\thread.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\threadpool.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\timer.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\tty.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\udp.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\util.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\winapi.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\winsock.c">
+      <Filter>源文件\win</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

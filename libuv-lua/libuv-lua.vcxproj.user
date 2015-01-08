@@ -4,5 +4,6 @@
     <LocalDebuggerCommand>$(SolutionDir)$(Configuration)\lua.exe</LocalDebuggerCommand>
     <LocalDebuggerCommandArguments>$(SolutionDir)..\scripts/server.lua</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerWorkingDirectory>$(SolutionDir)..\scripts</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
 </Project>

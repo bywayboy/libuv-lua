@@ -112,7 +112,17 @@ static int uv_tcpconn_setdecoder(lua_State * L)
 	if(NULL != conn)
 	{
 		int top = lua_gettop(L);
-
+		lua_pushvalue(L,2);
+		lua_pushlstring(L,"decoder", sizeof("decoder") -1);
+		lua_gettable(L,-2);
+		if(lua_isfunction(L, -1) || lua_iscfunction(L, -1)){
+			if(LUA_NOREF != conn->decoder_ref){
+				luaL_unref(L, LUA_REGISTRYINDEX, conn->decoder_ref);
+			}
+			lua_remove(L, -1);
+			conn->decoder_ref=luaL_ref(L, LUA_REGISTRYINDEX);
+		}
+		lua_settop(L,top);
 	}
 	return 0;
 }
@@ -162,20 +172,30 @@ void uv_tcpserver_onread(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf
 			}else{
 				minheap_push(&server->minheap,&conn->e);
 			}
-			
 		}
 
 		if(LUA_NOREF != server->ondata){
-			lua_rawgeti(L, LUA_REGISTRYINDEX, server->ondata);
-			if(lua_isfunction(L, -1))
-			{
-				lua_rawgeti(L,LUA_REGISTRYINDEX, server->ref); //得到当前 server 对象.
-				lua_rawgeti(L,LUA_REGISTRYINDEX, conn->ref); //得到当前 conn对象.
-				lua_pushlstring(L, buf->base, nread);
-				if(LUA_OK == lua_pcallk(L, 3, LUA_MULTRET, 0, 0, NULL))
-				{
-
+			int has_decoder=0;
+			if(LUA_NOREF != conn->decoder_ref){
+				lua_rawgeti(L,LUA_REGISTRYINDEX, conn->decoder_ref);
+				lua_pushlstring(L,"decoder", sizeof("decoder") -1);
+				lua_gettable(L,-2);
+				if(lua_isfunction(L,-1) || lua_iscfunction(L, -1)){
+					has_decoder=1;
+					lua_insert(L,-2);
+				}else{
+					lua_settop(L, top);
 				}
+			}
+
+			lua_rawgeti(L, LUA_REGISTRYINDEX, server->ondata);
+			lua_rawgeti(L,LUA_REGISTRYINDEX, server->ref); //得到当前 server 对象.
+			lua_rawgeti(L,LUA_REGISTRYINDEX, conn->ref); //得到当前 conn对象.
+			lua_pushlstring(L, buf->base, nread);
+			
+			if(LUA_OK == lua_pcallk(L, has_decoder?5:3, LUA_MULTRET, 0, 0, NULL))
+			{
+
 			}
 			lua_settop(L,top);
 		}
@@ -218,6 +238,10 @@ void lua_tcpserver_onconnection(uv_stream_t* stream, int status)
 								minheap_push(&server->minheap,&conn->e);
 								return;
 							}
+						}
+					}else{
+						if(lua_isstring(L,-1)){
+							puts(lua_tostring(L,-1));
 						}
 					}
 				}

@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.6)
 
-PROJECT(lua C)
+PROJECT(lua52 C)
 
-SET(LUA_SOURCES
+SET(SOURCES
 	src/lapi.c
 	src/lauxlib.c
 	src/lbaselib.c
@@ -37,11 +37,31 @@ SET(LUA_SOURCES
 	src/lzio.c
 )
 
-ADD_LIBRARY(lua SHARED ${LUA_SOURCES})
-TARGET_LINK_LIBRARIES(lua dl pthread m)
+
+ADD_LIBRARY(lua52 SHARED ${SOURCES})
+TARGET_LINK_LIBRARIES(lua52 dl pthread m)
+
+FILE(GLOB HEADERS
+	"src/lua.h"
+	"src/lauxlib.h"
+	"src/lualib.h"
+	"src/luaconf.h"
+)
+
+SET(LUA_SOURCES
+	src/lua.c
+)
+ADD_EXECUTABLE(lua ${LUA_SOURCES})
+TARGET_LINK_LIBRARIES(lua pthread dl rt lua52)
 
 INSTALL(TARGETS
-	lua DESTINATION /usr/lib
+	lua52	DESTINATION /usr/lib
+)
+INSTALL(FILES ${HEADERS} DESTINATION include)
+
+
+INSTALL(TARGETS
+	lua	DESTINATION /usr/sbin
 )
 
  

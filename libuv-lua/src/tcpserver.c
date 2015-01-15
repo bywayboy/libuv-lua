@@ -187,7 +187,9 @@ void uv_tcpserver_onread(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf
 					lua_settop(L, top);
 				}
 			}
-
+			if(lua_isfunction(L, -6) || lua_iscfunction(L, -6)){
+				puts("IS FUNC.");
+			}
 			lua_rawgeti(L, LUA_REGISTRYINDEX, server->ondata);
 			lua_rawgeti(L,LUA_REGISTRYINDEX, server->ref); //得到当前 server 对象.
 			lua_rawgeti(L,LUA_REGISTRYINDEX, conn->ref); //得到当前 conn对象.
@@ -196,6 +198,9 @@ void uv_tcpserver_onread(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf
 			if(LUA_OK == lua_pcallk(L, has_decoder?5:3, LUA_MULTRET, 0, 0, NULL))
 			{
 
+			}else{
+				if(LUA_TSTRING == lua_type(L, -1))
+					puts(lua_tostring(L,-1));
 			}
 			lua_settop(L,top);
 		}
@@ -229,7 +234,7 @@ void lua_tcpserver_onconnection(uv_stream_t* stream, int status)
 					if(LUA_OK == lua_pcallk(L, 2, LUA_MULTRET, 0, 0, NULL))
 					{
 						int nret = lua_gettop(L)-base;
-						printf("ret num=%d, base=%d\n",nret,base);
+						debug("ret num=%d, base=%d\n",nret,base);
 						if(0 == nret || (lua_isboolean(L, -1) && 1 == lua_toboolean(L, -1))){
 							if(0 == uv_read_start((uv_stream_t *)&conn->c, uv_alloc, uv_tcpserver_onread)){
 								lua_settop(L, base);

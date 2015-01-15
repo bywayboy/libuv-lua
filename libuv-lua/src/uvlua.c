@@ -11,6 +11,7 @@
 #include "tcpserver.h"
 #include "utils.h"
 #include "timer.h"
+#include "lua-decoder.h"
 
 /*
 	let uv= server.create()
@@ -163,6 +164,8 @@ static luaL_Reg uv_loop_Reg[]={
 	{"__gc", lua_loop___gc},
 	{"create_server",lua_create_server},
 	{"create_timer",lua_create_timer},
+	{"pack",lua_defparser_serial},
+	{"unpack",lua_defparser_deserial},
 	{"run",lua_uv_run},
 	{NULL,NULL}
 };

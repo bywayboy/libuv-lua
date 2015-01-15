@@ -3,6 +3,12 @@
 
 typedef struct lualoop lualoop_t;
 
+#if defined(_DEBUG)
+#define debug	printf
+#else
+#define debug()	((void) 0)
+
+#endif
 struct lualoop{
 	uv_loop_t  loop;
 	minheap_t minheap; //用来管理生存周期对象.

@@ -25,4 +25,7 @@ struct luadecoder{
 int lua_defparser_serial(lua_State * L);
 int lua_defparser_deserial(lua_State * L);
 
+int defaultdecoder_reglib(lua_State * L);
+
+int defaultdecoder_create(lua_State * L);
 #endif

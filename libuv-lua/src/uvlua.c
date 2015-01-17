@@ -164,15 +164,15 @@ static luaL_Reg uv_loop_Reg[]={
 	{"__gc", lua_loop___gc},
 	{"create_server",lua_create_server},
 	{"create_timer",lua_create_timer},
-	{"pack",lua_defparser_serial},
-	{"unpack",lua_defparser_deserial},
 	{"run",lua_uv_run},
 	{NULL,NULL}
 };
 
 static luaL_Reg uvlib_Reg[]={
 	{"loop",lua_create_loop},
-	
+	{"pack",lua_defparser_serial},
+	{"unpack",lua_defparser_deserial},
+	{"default_decoder",defaultdecoder_create},
 	{NULL,NULL}
 };
 
@@ -181,6 +181,8 @@ static luaL_Reg uvlib_Reg[]={
 int luaopen_uvlua(lua_State * L)
 {
 	tcpserver_reglib(L);
+	defaultdecoder_reglib(L);
+
 	timer_reglib(L);
 	lua_register_class(L,uv_loop_Reg,UVLUA_LOOP,NULL);
 	luaL_newlib(L, uvlib_Reg);

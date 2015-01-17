@@ -91,6 +91,7 @@
     <ClCompile Include="src\automem.c" />
     <ClCompile Include="src\lua-decoder.c" />
     <ClCompile Include="src\minheap.c" />
+    <ClCompile Include="src\tcpclient.c" />
     <ClCompile Include="src\tcpserver.c" />
     <ClCompile Include="src\timer.c" />
     <ClCompile Include="src\utils.c" />
@@ -103,6 +104,7 @@
     <ClInclude Include="src\automem.h" />
     <ClInclude Include="src\lua-decoder.h" />
     <ClInclude Include="src\minheap.h" />
+    <ClInclude Include="src\tcpclient.h" />
     <ClInclude Include="src\tcpserver.h" />
     <ClInclude Include="src\timer.h" />
     <ClInclude Include="src\utils.h" />

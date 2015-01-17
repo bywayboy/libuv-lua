@@ -22,6 +22,9 @@
     <ClCompile Include="src\lua-decoder.c">
       <Filter>源文件\解码器</Filter>
     </ClCompile>
+    <ClCompile Include="src\tcpclient.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\automem.h">
@@ -40,6 +43,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\lua-decoder.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tcpclient.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,7 +4,9 @@
 #include "lualib.h"
 #include "lauxlib.h"
 #include "lua-decoder.h"
-
+#include "uv.h"
+#include "minheap.h"
+#include "utils.h"
 
 const char LUA_DEFAULT_DECODER[]="<lua-raw-decoder>";
 
@@ -209,6 +211,7 @@ static int lua_pushdata(lua_State * L, const char * buf)
 		int used = lua_pushtable(L,buffer);
 		if(used == -1)
 			return used;
+		buffer += used;
 		break;
 	}default:
 		return -1;
@@ -287,8 +290,9 @@ int lua_defparser_serial(lua_State * L)
 		lua_def_serialone(&mem, L, i);
 	}
 	automem_append_byte(&mem,_LUA_TENDDATA);
-	*(unsigned int*)mem.pdata = mem.size - sizeof(unsigned int); // size 不包含变量自身.
+	*(unsigned int*)mem.pdata = SWAP_U32(mem.size - sizeof(unsigned int)); // size 不包含变量自身.
 	lua_pushlstring(L,(char *)mem.pdata,mem.size);
+	automem_uninit(&mem);
 	return 1;
 }
 
@@ -315,10 +319,9 @@ int lua_defparser_deserial(lua_State * L)
 	return i;
 }
 
-static int lua_defparser_push(lua_State * L, luadecoder_t * decoder, char * buf, unsigned int size)
+static int lua_defparser_push(lua_State * L, luadecoder_t * decoder, const char * buf, unsigned int size)
 {
-	size_t p = 0; /* 已用长度 */
-	int ret;
+	size_t p = 0,s=0; /* 已用长度 */
 	while(p < size)
 	{
 		switch(decoder->st)
@@ -333,14 +336,15 @@ static int lua_defparser_push(lua_State * L, luadecoder_t * decoder, char * buf,
 			break;
 		case _PST_DATASTART:
 			if(size >= decoder->size){
-				while(p < size && buf[p] != _LUA_TENDDATA){
-					int ret = lua_pushdata(L, buf + p);
+				while(p < size && buf[p] != (char )_LUA_TENDDATA){
+					int ret = lua_pushdata(L, buf + p);				
 					if(ret < 0){
 						decoder->st = _PST_ERRORDATA;
 						return -1;
 					}
 					p+=ret;
 				}
+				p++; // skip _LUA_TENDDATA
 				decoder->st = _PST_START;
 			}
 			break;
@@ -352,10 +356,11 @@ static int lua_defparser_push(lua_State * L, luadecoder_t * decoder, char * buf,
 static int lua_default_decoder(lua_State * L)
 {
 	size_t len;
+	int top = lua_gettop(L);
 	luadecoder_t * decoder = (luadecoder_t *)luaL_checkudata(L, 1, LUA_DEFAULT_DECODER);
 	const char * data = luaL_checklstring(L, 5, &len);
 	
-	int used = 0, offset = 0;
+	int used = 0, offset = 0, argc=0;
 
 	if(decoder->mem.size > decoder->offset)
 	{
@@ -365,7 +370,76 @@ static int lua_default_decoder(lua_State * L)
 		offset = decoder->offset;
 		data = (char *)decoder->mem.pdata;
 	}
+	if(!lua_isfunction(L,2) && !lua_iscfunction(L,2)){
+		luaL_error(L,"Error callback type %s.",lua_typename(L, 2));
+		return 0;
+	}
+	lua_pushvalue(L,2);
+	lua_pushvalue(L,3);
+	lua_pushvalue(L,4);
 
+	argc = lua_gettop(L);
+	//开始干活儿,
+	while(len > offset){
+		used = lua_defparser_push(L,decoder, data + offset, len - offset);
+		if(used > 0)
+		{
+			offset += used;
+			if(decoder->st == _PST_START)
+			{
+				int psh = lua_gettop(L) - argc + 2;
+				// 这里进入数据处理回掉.
+				if(LUA_OK != lua_pcallk(L, psh,LUA_MULTRET, 0, 0, NULL)){
+					if(lua_isstring(L, -1)){
+						puts(lua_tostring(L, -1));
+					}
+				}
 
+			}
+			continue;
+		}
+
+		if(len > offset)
+		{
+			if(data != (char *)decoder->mem.pdata)
+			{	// 来自参数直传数据
+				automem_append_voidp(&decoder->mem, data + offset, len - offset);
+				decoder->offset = 0;
+			}else{
+				decoder->offset = offset; //是在 mem 内解析的 只需要保存新的偏移.
+			}
+		}else{
+			if(decoder->mem.buffersize > 10240)
+				automem_clean(&decoder->mem, 32);
+			else
+				automem_reset(&decoder->mem);
+			decoder->offset = 0;
+		}
+		break;
+	}
 	return 0;
+}
+static int lua_default_decoder___gc(lua_State * L)
+{
+	return 0;
+}
+luaL_Reg lua_defdecoder_regs[]={
+	{"decoder",lua_default_decoder},
+	{"__gc", lua_default_decoder___gc},
+	{NULL,NULL}
+};
+
+int defaultdecoder_reglib(lua_State * L)
+{
+	lua_register_class(L,lua_defdecoder_regs,LUA_DEFAULT_DECODER,NULL);
+}
+
+int defaultdecoder_create(lua_State * L)
+{
+	luadecoder_t * decoder = (luadecoder_t*)lua_newuserdata(L, sizeof(luadecoder_t));
+	automem_init(&decoder->mem, 128);
+	decoder->offset = decoder->size = 0;
+	decoder->st = _PST_START;
+	luaL_setmetatable(L, LUA_DEFAULT_DECODER);
+	return 1;
 }

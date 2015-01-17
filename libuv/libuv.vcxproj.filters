@@ -29,9 +29,6 @@
     <ClCompile Include="src\inet.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\threadpool.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\uv-common.c">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -115,6 +112,9 @@
     </ClCompile>
     <ClCompile Include="src\win\winsock.c">
       <Filter>源文件\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\threadpool.c">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

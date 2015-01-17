@@ -1,9 +1,5 @@
-local loop = (require "uvlua").loop()
-
-local m={}
-function m:ondata(conn,data)
-
-end
+local libuv = require "uvlua"
+local loop = libuv.loop();
 
 --[[创建一个1秒执行一次的定时器.
 local re=1
@@ -32,30 +28,19 @@ local server = loop:create_server(
 	function (server,conn) -- 新连接到达 返回 false 拒绝连接.
 		-- 握手处理 
 		print(conn:ip(),this,self)
-		local decoder =require "decoder.line"
-		conn:set_decoder(decoder)
+		conn:set_decoder(libuv.default_decoder())
 		return true
 	end,
-	function (server, conn, data) -- 数据到达
+	function (server, conn, data,...) -- 数据到达
 		-- 数据解析，业务处理.
-		loop.spawn(function()
-			---
-			end,
-			function ()
-				-- write data
-			end
-			data
-		)
-		conn:echo("string",table,123.456)
+		conn:echo("string",data)
 	end,
     function (server, conn) -- 连接被关闭
 		print("on close")
 	end
 )
--- 设置连接超时.
+-- 设置连接超时. 客户端超过世间没响应后 自动踢掉
 server:set_timeout(30)
-
-
 
 
 loop:run();
